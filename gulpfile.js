@@ -27,3 +27,7 @@ gulp.task('minify', ['tsc'], function () {
         }))
         .pipe(gulp.dest('dist/'));
 });
+
+gulp.task('watch', ['tsc'], function () {
+    return gulp.watch('src/*', ['tsc']);
+})

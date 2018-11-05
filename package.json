@@ -1,37 +1,39 @@
 {
-  "name": "ng-sane-defaults",
-  "version": "1.0.0",
-  "description": "AngularJS extension that provides a sane way to define component defaults",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/KevinRamharak/ng-sane-defaults.git"
-  },
-  "keywords": [
-    "angularjs",
-    "component",
-    "components",
-    "defaults",
-    "module"
-  ],
-  "scripts": {
-    "build": "tsc"
-  },
-  "author": "Kevin Ramharak <kevin@ramharak.nl>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/KevinRamharak/ng-sane-defaults/issues"
-  },
-  "homepage": "https://github.com/KevinRamharak/ng-sane-defaults#readme",
-  "peerDependencies": {
-    "angular": "^1.7"
-  },
-  "devDependencies": {
-    "@types/angular": "^1.6.51",
-    "gulp": "^3.9.1",
-    "gulp-rename": "^1.4.0",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-typescript": "^5.0.0-alpha.3",
-    "gulp-uglify": "^3.0.1",
-    "typescript": "^3.0.3"
-  }
+    "name": "ng-sane-defaults",
+    "version": "1.0.0",
+    "description": "AngularJS extension that provides a sane way to define component defaults",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/KevinRamharak/ng-sane-defaults.git"
+    },
+    "keywords": [
+        "angularjs",
+        "component",
+        "components",
+        "defaults",
+        "module"
+    ],
+    "scripts": {
+        "build": "gulp",
+        "watch": "gulp watch",
+        "dev": "python -m http.server --bind localhost"
+    },
+    "author": "Kevin Ramharak <kevin@ramharak.nl>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/KevinRamharak/ng-sane-defaults/issues"
+    },
+    "homepage": "https://github.com/KevinRamharak/ng-sane-defaults#readme",
+    "peerDependencies": {
+        "angular": "^1.7"
+    },
+    "devDependencies": {
+        "@types/angular": "^1.6.51",
+        "gulp": "^3.9.1",
+        "gulp-rename": "^1.4.0",
+        "gulp-sourcemaps": "^2.6.4",
+        "gulp-typescript": "^5.0.0-alpha.3",
+        "gulp-uglify": "^3.0.1",
+        "typescript": "^3.0.3"
+    }
 }
