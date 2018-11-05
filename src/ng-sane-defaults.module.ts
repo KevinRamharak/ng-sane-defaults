@@ -3,7 +3,15 @@
 
     angular
         .module('ng-sane-defaults', [])
+        .provider('defaultsConfig', { $get: () => config })
         .config(['$compileProvider', configure]);
+
+    /**
+     * by default check for `null | undefined`, if false check for `undefined` only
+     */
+    const config = {
+        checkNull: true
+    };
 
     function configure($compileProvider: angular.ICompileProvider) {
         $compileProvider.component = patchRegisterComponent(
@@ -64,7 +72,11 @@
 
                     if (typeof defaults === 'object') {
                         for (const prop in defaults) {
-                            if (this[prop] == null) {
+                            if (
+                                config.checkNull
+                                    ? this[prop] == null
+                                    : typeof this[prop] === 'undefined'
+                            ) {
                                 this[prop] = defaults[prop];
                             }
                         }

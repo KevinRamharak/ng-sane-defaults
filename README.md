@@ -4,13 +4,33 @@ AngularJS extension that provides a sane way to define component defaults
 
 ## Description
 
-This module was written to solve the problem of not having a nice non-biolerplatey way of providing default values for components. Another problem it attempts to solve is to prevent the default value not applying if a value was provided trough bindings but the value is `undefined` or `null`.
+This module was written to provide:
 
-The module works by using a static property on the component controller called `$defaults`. Getter functions are also supported to provide dynamic defaults for each component instance.
+-   a non-boiler plate way to define defaults for components
+-   assign the default value if a binding was provided but the binding resolves to `undefined` or `null`
 
-> NOTE: You cannot set static variables on a class in ES6 syntax. Either use a superset which allowes it (Typescript, ESNext), use a getter or set it on the class itself like `class A {}; A.staticVar = 2;`. Or don't use ES6 classes (and lose your sanity).
+If you want to disable the null check you can use the following pattern:
 
-This module was created with dynamic getters in mind. Because it is a function you could do anything in the function body (for example call an API). I havent found a use case for it, but sure do mention it if you do.
+```js
+// with a config section
+angular.module('app', ['ng-sane-defaults']).config([
+    'defaultsConfigProvider',
+    function(provider) {
+        provider.$get().checkNull = false;
+    }
+]);
+// or a run section
+angular.module('app', ['ng-sane-defaults']).run([
+    'defaultsConfig',
+    function(config) {
+        config.checkNull = false;
+    }
+]);
+```
+
+The module uses the static property `$defaults` to retrieve its default values for a component. Getter functions are also supported to provide dynamic defaults for each component instance.
+
+This module was created with dynamic getters in mind. Because a getter is a function you could do anything in the function body (for example call an API). I havent found a use case for it, but sure do mention it if you do.
 
 ## Example
 
@@ -73,22 +93,17 @@ angular.module('yourApp', ['ng-sane-defaults']).component('yourComponent', {
 })();
 ```
 
-The following HTML should work for any of the examples
+The following HTML should work for any of the examples, check out `playground.html` to see it in action
 
 ```html
 <your-component-controller />
 <!-- still works for bound undefined values -->
 <your-component-controller text="undefined" />
-<!-- and null -->
+<!-- and null (can be turned of with `config.checkNull = false` -->
 <your-component-controller text="null" />
 ```
 
 ## How it works
 
-It currently works by [monkey patching](https://en.wikipedia.org/wiki/Monkey_patch) the angular core `registerComponent` function on the `$compileProvider` factory function. It overides (or creates) the `$onInit` function to check if any given keys in the `$defaults` object are `undefined` or `null` on the controller instance and sets the value if they are.
-
-## Todo's
-
--   [x] Use the angularjs `decorator` and `delegate` API
--   [ ] Automate the publish and build process
--   [ ] allow for configuration to not test for `null` values
+It currently works by [monkey patching](https://en.wikipedia.org/wiki/Monkey_patch) the angular core `registerComponent` function on the `$compileProvider` factory function. It extends (or creates) the `$onInit` function to check if the controller has `undefined` or `null` values if its key is present in the `$defaults` object.
+If you have defined your own `$onInit` lifecycle hook it will be invoked after the `$defaults` values are set.

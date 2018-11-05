@@ -12,7 +12,7 @@ gulp.task('tsc', function () {
     const project = ts.createProject('tsconfig.json');
     return project.src()
         .pipe(sourcemaps.init())
-        .pipe(project())
+        .pipe(project()).on('error', console.error)
         .pipe(sourcemaps.write('.', {
             includeContent: false
         }))

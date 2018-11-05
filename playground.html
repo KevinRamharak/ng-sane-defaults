@@ -1,42 +1,48 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <script data-require="angular.js@1.7.0" data-semver="1.7.0" src="https://code.angularjs.org/1.7.0/angular.min.js"></script>
+<head>
+    <script data-require="angular.js@1.7.0" data-semver="1.7.0" src="https://code.angularjs.org/1.7.0/angular.js"></script>
     <script src="https://rawgit.com/KevinRamharak/ng-sane-defaults/master/dist/ng-sane-defaults.js"></script>
     <script>
-      let i = 0;
-      
-      class ComponentTagController {
-        static get $defaults() {
-          return {
-            text: `component #${++i}`
-          };
-        }
-      }
-      
-      angular.module('myApp', ['ng-sane-defaults']).component('componentTag', {
-        template: '<p>{{ $ctrl.text }}</p>',
-        bindings: {
-          text: '<'
-        },
-        controller: ComponentTagController
-      }).run(['$rootScope', function($rootScope) {
-        $rootScope.test1 = undefined;
-        $rootScope.test2 = null;
-        $rootScope.test3 = 'text supplied by variable';
-      }]);
-    </script>
-  </head>
+        let checkNull = true; // toggling this well change test2
+        let i = 0;
 
-  <body ng-app="myApp">
+        class ComponentTagController {
+            static get $defaults() {
+                return {
+                    text: `component #${++i}`
+                };
+            }
+        }
+
+        angular.module('myApp', ['ng-sane-defaults']).component('componentTag', {
+            template: '<p>{{ $ctrl.text }}</p>',
+            bindings: {
+                text: '<'
+            },
+            controller: ComponentTagController
+        }).run(['$rootScope', 'defaultsConfig', function ($rootScope, defaultsConfig) {
+            $rootScope.test1 = undefined;
+            $rootScope.test2 = null;
+            $rootScope.test3 = 'text supplied by variable';
+            console.log(defaultsConfig);
+        }]).config(['defaultsConfigProvider', function (provider) {
+            provider.$get().checkNull = checkNull;
+        }]);
+
+    </script>
+</head>
+
+<body ng-app="myApp">
     <!-- defaults  -->
     <component-tag></component-tag>
     <component-tag text="test1"></component-tag>
     <component-tag text="test2"></component-tag>
     <!-- non defaults -->
     <component-tag text="test3"></component-tag>
-    <component-tag text="'text supplied by literal expressoin'"></compontent-tag>
-  </body>
-  
+    <component-tag text="'text supplied by literal expressoin'">
+        </compontent-tag>
+</body>
+
 </html>
