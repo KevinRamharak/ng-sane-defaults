@@ -54,13 +54,15 @@
                 // check if it has a controller function
                 if (typeof options.controller !== 'function') continue;
 
-                // check if it has a `static $defaults` property, use `getOwnPropertyNames` to check for a getter function without invoking it
-                if (
-                    Object.getOwnPropertyNames(options.controller).indexOf(
-                        '$defaults'
-                    ) === -1
-                )
-                    continue;
+                // check if it has a `static $defaults` property
+                // https://caniuse.com/#getOwnPropertyDescriptor supports up to IE8
+                // but angular 1.3 dropped support for IE8 so we are probably fine
+                const descriptor = Object.getOwnPropertyDescriptor(
+                    options.controller,
+                    '$defaults'
+                );
+
+                if (!descriptor) continue;
 
                 // get the original `$onInit` function or undefined if there was none
                 const onInit: Function | undefined =
